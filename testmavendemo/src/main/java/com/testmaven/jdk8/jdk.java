@@ -3,6 +3,7 @@ package com.testmaven.jdk8;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class jdk {
 
@@ -63,7 +64,7 @@ public class jdk {
             new Employee("zhouwu",111,2344.00),
             new Employee("zhengwang",13,4234.00)
     );//数组转集合
-    public List<Employee> filterEmployees(List<Employee> list){
+    public List<Employee> filterEmployees(List<Employee> list, MyPredicate<Employee> myPredicate){
             List<Employee> emps = new ArrayList<>();
             for(Employee em:list){
                 if(em.getAge()>=35){
@@ -75,7 +76,12 @@ public class jdk {
 
     @Test
     public void test3(){
-        List<Employee> employees = filterEmployees(emp);
+        List<Employee> employees = filterEmployees(emp, new MyPredicate<Employee>() {
+            @Override
+            public boolean test(Employee employee) {
+                return false;
+            }
+        });
         for(Employee employee:employees){
             System.out.println(employee);
         }
@@ -91,7 +97,7 @@ public class jdk {
                     return emps;
                 }
     //这两个需求都有相同的代码，而且只是改变这一句代码：em.getAge()>=35    em.getSalary()>=5000
-    //优化1、使用设计模式：
+    //优化1、使用设计模式：策略模式
     public List<Employee> filterEmployeeAge(List<Employee> list,MyPredicate<Employee> mp){
         List<Employee> emps = new ArrayList<>();
         for(Employee em:list){
@@ -114,6 +120,39 @@ public class jdk {
 
     }
 
-    //优化2:
+    //优化2:匿名内部类
+    @Test
+    public void test5(){
+        List<Employee> employees=filterEmployeeAge(emp, new MyPredicate<Employee>() {
+             @Override
+             public boolean test(Employee t) {
+                 return t.getSalary()<=5000;
+             }
+         });
+        for(Employee employee:employees){
+            System.out.println(employee);
+        }
+
+    }
+
+    //优化3:lamdba表达式
+    @Test
+    public void test6(){
+
+        List<Employee> employees= filterEmployeeAge(emp,(e) -> e.getSalary() <=5000);
+        employees.forEach(System.out::println);
+    }
+
+    //优化4:
+    @Test
+    public void test7(){
+       /* List<Employee> employees=emp.stream().filter((e) -> e.getSalary() <=5000).collect(Collectors.toList());
+        employees.forEach(System.out::println);*/
+        emp.stream().filter((e) -> e.getSalary() <=5000).forEach(System.out::println);
+        System.out.println("-------//取前两个----------------------");
+        emp.stream().filter((e) -> e.getSalary() <=5000).limit(2).forEach(System.out::println);
+        System.out.println("---------------取名字--------------");
+        emp.stream().map(Employee::getName).forEach(System.out::println);
+    }
 
 }
