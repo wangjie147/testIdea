@@ -80,5 +80,40 @@ public class jdk {
             System.out.println(employee);
         }
     }
+    //获取当前公司中员工工资大于5000的员工信息
+                public List<Employee> filterEmployeessalary(List<Employee> list){
+                    List<Employee> emps = new ArrayList<>();
+                    for(Employee em:list){
+                        if(em.getSalary()>=5000){
+                            emps.add(em);
+                        }
+                    }
+                    return emps;
+                }
+    //这两个需求都有相同的代码，而且只是改变这一句代码：em.getAge()>=35    em.getSalary()>=5000
+    //优化1、使用设计模式：
+    public List<Employee> filterEmployeeAge(List<Employee> list,MyPredicate<Employee> mp){
+        List<Employee> emps = new ArrayList<>();
+        for(Employee em:list){
+            if(mp.test(em)){
+                emps.add(em);
+            }
+        }
+        return emps;
+    }
+    @Test
+    public void test4(){
+        List<Employee> employees = filterEmployeeAge(emp,new FilterEmployeeByAge());
+        for(Employee employee:employees){
+            System.out.println(employee);
+        }
+        List<Employee> employeeSa = filterEmployeeAge(emp,new FilterEmployeeBySalary());
+        for(Employee employee:employeeSa){
+            System.out.println(employee);
+        }
+
+    }
+
+    //优化2:
 
 }
