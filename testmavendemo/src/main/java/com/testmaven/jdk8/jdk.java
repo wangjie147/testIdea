@@ -2,9 +2,7 @@ package com.testmaven.jdk8;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.TreeSet;
+import java.util.*;
 
 public class jdk {
 
@@ -59,8 +57,28 @@ public class jdk {
     }
 
     //获取当前公司中员工年龄大于35的员工信息
+    List<Employee> emp = Arrays.asList(
+            new Employee("zhangsan",1111,234234.00),
+            new Employee("lisi",311,4234.00),
+            new Employee("zhouwu",111,2344.00),
+            new Employee("zhengwang",13,4234.00)
+    );//数组转集合
+    public List<Employee> filterEmployees(List<Employee> list){
+            List<Employee> emps = new ArrayList<>();
+            for(Employee em:list){
+                if(em.getAge()>=35){
+                    emps.add(em);
+                }
+            }
+            return emps;
+    }
 
-
-
+    @Test
+    public void test3(){
+        List<Employee> employees = filterEmployees(emp);
+        for(Employee employee:employees){
+            System.out.println(employee);
+        }
+    }
 
 }
