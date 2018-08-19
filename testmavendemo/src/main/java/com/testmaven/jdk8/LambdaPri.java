@@ -1,5 +1,6 @@
 package com.testmaven.jdk8;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -67,5 +68,16 @@ public class LambdaPri {
         System.out.println("-------------------------------------------------------");
         String s1 = strHandler("sdfsdfsdf", (x) -> x.toUpperCase());
         System.out.println(s1);
+    }
+
+    //需求：对于两个long型的数据进行处理
+    public void op(Long l1,Long l2,MyFunction2<Long,Long> mf){
+        System.out.println(mf.getValue(l1,l2));
+    }
+
+    @Test
+    public void test3(){
+       op(100L,200L,(x,y) -> x+y );
+        op(100L,200L,(x,y) -> x*y );
     }
 }
