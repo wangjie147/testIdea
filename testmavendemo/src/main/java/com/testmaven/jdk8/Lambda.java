@@ -2,7 +2,7 @@ package com.testmaven.jdk8;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Comparator;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class Lambda {
@@ -36,7 +36,20 @@ public class Lambda {
      *
      * 有两个以上的参数，有返回值并且Lambda体中有多条语句
      *
-     * 语法格式五：
+     * 语法格式五： 若Lambda体中只有一条语句，return 和大括号都可以省略不写
+     *
+     * 语法格式六： Lambda表达式的参数列表的数据类型可以省略不写，因为jvm编译器通过上下文推断出，数据类型，即“类型推断”
+     *
+     * 左右遇一   括号省
+     *
+     * 左侧推断类型省
+     *
+     *
+     * 二、Lambda表达式需要“函数式接口”的支持
+     *
+     *    函数式接口：接口中只有一个抽象方法的接口，称为函数式接口。可以使用注解 @FunctionalInterface 修饰
+     *
+     *    可以检查是否是函数式接口。
      *
      *
      */
@@ -59,8 +72,6 @@ public class Lambda {
 
          r1.run();
 
-
-
      }
 
 
@@ -82,8 +93,36 @@ public class Lambda {
              System.out.println("我是函数体");
              return Integer.compare(x,y);
          };
+        System.out.println(comn.compare(10,2));
 
     }
 
+    @Test
+    public void test4(){
+        System.out.println("----------- 语法格式五： 若Lambda体中只有一条语句，return 和大括号都可以省略不写----------------------");
+        Comparator<Integer> comn = (x, y) -> Integer.compare(x,y);
+        System.out.println(comn.compare(10,2));
+    }
+
+    @Test
+    public void test5(){
+        List<String> list =new ArrayList<>();
+        show(new HashMap<>());
+    }
+
+    public void show(Map<String,Integer> map){
+
+    }
+
+    //需求：对一个数进行运算
+    public Integer operation(Integer num, MyFun mf){
+         return mf.getValue(num);
+    }
+
+    @Test
+    public void test6(){
+       Integer num= operation(100,(x) -> x*x);
+        System.out.println(num);
+    }
 
 }
