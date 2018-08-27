@@ -1,11 +1,14 @@
 package com.testmaven.jdk8;
 
 
+import java.util.Objects;
+
 public class Employee {
 
     private String name;
     private int age;
     private double salary;
+    private Status status;
 
     public Employee(String name, int age, double salary) {
         this.name = name;
@@ -13,9 +16,11 @@ public class Employee {
         this.salary = salary;
     }
 
-    public Employee() {
-
+    public Employee(int age) {
+         this.age =age;
     }
+
+
 
     public String getName() {
         return name;
@@ -50,10 +55,35 @@ public class Employee {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        Employee employee = (Employee) o;
 
+        if (age != employee.age) return false;
+        if (Double.compare(employee.salary, salary) != 0) return false;
+        return name.equals(employee.name);
+    }
 
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = name.hashCode();
+        result = 31 * result + age;
+        temp = Double.doubleToLongBits(salary);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
 
+    public enum Status{
+           FREE,
+           BUSY,
+           VOCATION;
+
+    }
 }
 
 
