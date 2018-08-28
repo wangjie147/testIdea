@@ -2,6 +2,7 @@ package com.testmaven.jdk8;
 
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLOutput;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -110,7 +111,45 @@ public class StreamAPI3 {
     @Test
     public void test4(){
         System.out.println("----------------------------分组：------------------------------------------");
-
+        Map<Employee.Status, List<Employee>> collect = emp.stream().collect(Collectors.groupingBy(Employee::getStatus));
+        System.out.println(collect);
+        System.out.println("----------------------------多级分组：------------------------------------------");
+        Map<Employee.Status, Map<String, List<Employee>>> collect1 = emp.stream().collect(Collectors.groupingBy(Employee::getStatus, Collectors.groupingBy((e) -> {
+            if (((Employee) e).getAge() <= 35) {
+                return "青年";
+            } else if (((Employee) e).getAge() <= 50) {
+                return "中年";
+            } else {
+                return "老年";
+            }
+        })));
+        System.out.println(collect1);
     }
+    //分片
+    @Test
+    public void test5(){
+        System.out.println("---------------------------- 分片------------------------------------------");
+        Map<Boolean, List<Employee>> collect = emp.stream().collect(Collectors.partitioningBy((e) -> e.getSalary() > 8000));
+        System.out.println(collect);
+    }
+    //
+    @Test
+    public void test6(){
+        System.out.println("---------------------------- 统计------------------------------------------");
+        DoubleSummaryStatistics collect = emp.stream().collect(Collectors.summarizingDouble(Employee::getSalary));
+        System.out.println(collect.getAverage());
+        System.out.println(collect.getCount());
+        System.out.println(collect.getMax());
+        System.out.println(collect.getMin());
+        System.out.println(collect.getSum());
+    }
+
+    @Test
+    public void test7(){
+        System.out.println("----------------------------------------------------------------------");
+        String collect = emp.stream().map(Employee::getName).collect(Collectors.joining(","));
+        System.out.println(collect);
+    }
+
 
 }
