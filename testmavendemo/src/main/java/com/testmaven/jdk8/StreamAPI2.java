@@ -125,13 +125,13 @@ public class StreamAPI2 {
         System.out.println("------------------定制排序------------------------------");
 
         //TODO  不知道为什么报错
-        emp.stream().sorted((e1,e2)-> {
+        /*emp.stream().sorted((e1,e2)-> {
                if(e1.getAge().equals(e2.getAge())){
                    return e1.getName().compareTo(e2.getName());
                }else{
                    return e1.getAge().compareTo(e2.getAge());
                }
-        });
+        });*/
         //先按年龄排，年龄一样按姓名排。
 
     }

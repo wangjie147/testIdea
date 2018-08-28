@@ -26,8 +26,23 @@ public class Employee {
         return name;
     }
 
+    public Employee(String name, int age, double salary, Status status) {
+        this.name = name;
+        this.age = age;
+        this.salary = salary;
+        this.status = status;
+    }
+
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public int getAge() {
@@ -47,15 +62,6 @@ public class Employee {
     }
 
     @Override
-    public String toString() {
-        return "Employee{" +
-                "name='" + name + '\'' +
-                ", age=" + age +
-                ", salary=" + salary +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -64,7 +70,8 @@ public class Employee {
 
         if (age != employee.age) return false;
         if (Double.compare(employee.salary, salary) != 0) return false;
-        return name.equals(employee.name);
+        if (!name.equals(employee.name)) return false;
+        return status == employee.status;
     }
 
     @Override
@@ -75,6 +82,7 @@ public class Employee {
         result = 31 * result + age;
         temp = Double.doubleToLongBits(salary);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + status.hashCode();
         return result;
     }
 
@@ -82,7 +90,16 @@ public class Employee {
            FREE,
            BUSY,
            VOCATION;
+    }
 
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                ", salary=" + salary +
+                ", status=" + status +
+                '}';
     }
 }
 
