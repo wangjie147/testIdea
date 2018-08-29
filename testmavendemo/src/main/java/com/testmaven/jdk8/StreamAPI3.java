@@ -3,6 +3,11 @@ package com.testmaven.jdk8;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLOutput;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -149,6 +154,124 @@ public class StreamAPI3 {
         System.out.println("----------------------------------------------------------------------");
         String collect = emp.stream().map(Employee::getName).collect(Collectors.joining(","));
         System.out.println(collect);
+    }
+
+
+    public static void main(String[] args) {
+        //jdk8新特性
+        LocalDateTime now = LocalDateTime.now();
+        now = now.minus(30, ChronoUnit.DAYS);
+        System.out.println(now.toString());
+    }
+    //Java 获取两个日期之间的所有日期
+    @Test
+    public void test8(){
+        for(int i=0;i>-120;i--){
+            SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd");
+            String maxDateStr = "2018-08-27";
+            String minDateStr = "";
+            String calcSmallDateStr = "";
+            Calendar calc =Calendar.getInstance();
+            Calendar calcSmall =Calendar.getInstance();
+            try {
+                calc.setTime(sdf.parse(maxDateStr));
+                calcSmall.setTime(sdf.parse(maxDateStr));
+                calc.add(calc.DATE, i);
+                calcSmall.add(calc.DATE,i+1);
+                Date minDate = calc.getTime();
+                Date calcSmallDate = calcSmall.getTime();
+                minDateStr = sdf.format(minDate);
+                calcSmallDateStr= sdf.format(calcSmallDate);
+                System.out.println("minDateStr:"+minDateStr+" 09:00:00"+"------calcSmallDateStr:"+calcSmallDateStr+" 09:00:00");
+            } catch (ParseException e1) {
+                e1.printStackTrace();
+            }
+        }
+    }
+
+
+
+
+
+    /**
+     * 获取两个日期之间的所有日期
+     *
+     * @param startTime
+     *            开始日期
+     * @param endTime
+     *            结束日期
+     * @return
+     */
+    public static List<String> getDays(String startTime, String endTime) {
+
+        // 返回的日期集合
+        List<String> days = new ArrayList<String>();
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date start = dateFormat.parse(startTime);
+            Date end = dateFormat.parse(endTime);
+
+            Calendar tempStart = Calendar.getInstance();
+            tempStart.setTime(start);
+
+            Calendar tempEnd = Calendar.getInstance();
+            tempEnd.setTime(end);
+            tempEnd.add(Calendar.DATE, +1);// 日期加1(包含结束)
+            while (tempStart.before(tempEnd)) {
+                days.add(dateFormat.format(tempStart.getTime()));
+                tempStart.add(Calendar.DAY_OF_YEAR, 1);
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return days;
+    }
+
+    @Test
+    public void test20(){
+        System.out.println(getDays("2018-05-01", "2018-08-29"));
+    }
+
+    @Test
+    public void test9() {
+        Calendar now = Calendar.getInstance();
+        now.add(Calendar.DAY_OF_MONTH, -1);
+        String endDate = new SimpleDateFormat("yyyy-MM-dd").format(now.getTime());
+        System.out.println(endDate+" 09:00:00");
+    }
+
+    /**
+     *  给定一个数字列表，如何返回一个由每个数的平方构成的列表呢
+     *  给定（1,2，3,4,5），返回应该为（1,4,9,16,25）
+     *
+     */
+    @Test
+    public void test12() {
+          Integer[] nums = new Integer[]{1,2,3,4,5};
+          Arrays.stream(nums).map((x)->x*x).forEach(System.out::println);
+          System.out.println("----------------------------------------------------------------------");
+    }
+    /**
+     *  怎么样用map和reduce方法数一数流中有多少个Employee呢
+     *
+     */
+
+    List<Employee> emps = Arrays.asList(
+            new Employee("zhangsan",1111,234234.00,Employee.Status.FREE),
+            new Employee("lisi",311,4234.00,Employee.Status.BUSY),
+            new Employee("zhouwu",111,2344.00,Employee.Status.FREE),
+            new Employee("zhengwang",13,4234.00,Employee.Status.VOCATION),
+            new Employee("zhouwu",111,2344.00,Employee.Status.FREE),
+            new Employee("zhengwang",13,4234.00,Employee.Status.BUSY)
+    );
+
+    @Test
+    public void test22(){
+        Optional<Integer> reduce = emps.stream().map((e) -> 1).reduce(Integer::sum);
+        System.out.println(reduce.get());
     }
 
 
