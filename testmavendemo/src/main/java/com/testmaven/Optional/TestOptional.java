@@ -121,7 +121,11 @@ public class TestOptional {
 
     @Test
     public void test9(){
-        Optional<NewMan> o = Optional.ofNullable(null);
+        /*Optional<NewMan> o = Optional.ofNullable(null);
+        String godnessName2 = getGodnessName2(o);
+        System.out.println(godnessName2);*/
+        Optional<Godness> gn = Optional.ofNullable(new Godness("mmmmmm"));
+        Optional<NewMan> o = Optional.ofNullable(new NewMan(gn));
         String godnessName2 = getGodnessName2(o);
         System.out.println(godnessName2);
     }
